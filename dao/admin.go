@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/e421083458/go_gateway/dto"
-	"github.com/e421083458/go_gateway/public"
+	"github.com/WSZ9527/go_gateway/dto"
+	"github.com/WSZ9527/go_gateway/public"
 	"github.com/e421083458/gorm"
 	"github.com/gin-gonic/gin"
 )
@@ -29,7 +29,7 @@ func (t *Admin) TableName() string {
 // Find 根据已知条件查找一个admin对象查找
 func (t *Admin) Find(c *gin.Context, tx *gorm.DB, search *Admin) (*Admin, error) {
 	adminInfo := &Admin{}
-	err := tx.SetCtx(c).Where(search).Find(adminInfo).Error
+	err := tx.SetCtx(public.GetGinTraceContext(c)).Where(search).Find(adminInfo).Error
 	if err != nil {
 		return nil, err
 	}
@@ -48,4 +48,9 @@ func (t *Admin) LoginCheck(c *gin.Context, tx *gorm.DB, param *dto.AdminLoginInp
 		return nil, errors.New("密码错误，请重新输入")
 	}
 	return adminInfo, nil
+}
+
+// Save 更新修改对象到数据库中
+func (t *Admin) Save(c *gin.Context, tx *gorm.DB) error {
+	return tx.SetCtx(public.GetGinTraceContext(c)).Save(t).Error
 }

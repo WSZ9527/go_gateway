@@ -1,6 +1,8 @@
 package router
 
 import (
+	"log"
+
 	"github.com/WSZ9527/go_gateway/controller"
 	"github.com/WSZ9527/go_gateway/docs"
 	"github.com/WSZ9527/go_gateway/middleware"
@@ -81,27 +83,55 @@ func InitRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 		controller.DemoRegister(v1)
 	}
 
-	//非登陆接口
-	store := sessions.NewCookieStore([]byte("secret"))
-	apiNormalGroup := router.Group("/api")
-	apiNormalGroup.Use(sessions.Sessions("mysession", store),
+	// //非登陆接口
+	// store := sessions.NewCookieStore([]byte("secret"))
+	// apiNormalGroup := router.Group("/api")
+	// apiNormalGroup.Use(sessions.Sessions("mysession", store),
+	// 	middleware.RecoveryMiddleware(),
+	// 	middleware.RequestLog(),
+	// 	middleware.TranslationMiddleware())
+	// {
+	// 	controller.ApiRegister(apiNormalGroup)
+	// }
+
+	// //登陆接口
+	// apiAuthGroup := router.Group("/api")
+	// apiAuthGroup.Use(
+	// 	sessions.Sessions("mysession", store),
+	// 	middleware.RecoveryMiddleware(),
+	// 	middleware.RequestLog(),
+	// 	middleware.SessionAuthMiddleware(),
+	// 	middleware.TranslationMiddleware())
+	// {
+	// 	controller.ApiLoginRegister(apiAuthGroup)
+	// }
+
+	//管理员登录控制器路由注册
+	adminLoginRouter := router.Group("/admin")
+	adminStore, err := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte("secret"))
+	if err != nil {
+		log.Fatalf("sessions.NewRedisStore err:%v", err)
+	}
+	adminLoginRouter.Use(
+		sessions.Sessions("adminSession", adminStore),
 		middleware.RecoveryMiddleware(),
 		middleware.RequestLog(),
+		// middleware.SessionAuthMiddleware(),
 		middleware.TranslationMiddleware())
 	{
-		controller.ApiRegister(apiNormalGroup)
+		controller.AdminLoginRegister(adminLoginRouter)
 	}
 
-	//登陆接口
-	apiAuthGroup := router.Group("/api")
-	apiAuthGroup.Use(
-		sessions.Sessions("mysession", store),
+	//管理员控制器路由注册
+	adminRouter := router.Group("/admin")
+	adminRouter.Use(
+		sessions.Sessions("adminSession", adminStore),
 		middleware.RecoveryMiddleware(),
 		middleware.RequestLog(),
 		middleware.SessionAuthMiddleware(),
 		middleware.TranslationMiddleware())
 	{
-		controller.ApiLoginRegister(apiAuthGroup)
+		controller.AdminRegister(adminRouter)
 	}
 	return router
 }

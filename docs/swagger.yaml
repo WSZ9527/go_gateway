@@ -1,4 +1,44 @@
 definitions:
+  dto.AdminInfoOutput:
+    properties:
+      avatar:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      login_time:
+        type: string
+      name:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.AdminLoginInput:
+    properties:
+      password:
+        description: 密码
+        example: "123456"
+        type: string
+      username:
+        description: 管理员用户名
+        example: admin
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.ChangePwdInput:
+    properties:
+      password:
+        description: 密码
+        example: "123456"
+        type: string
+    required:
+    - password
+    type: object
   dto.DemoInput:
     properties:
       age:
@@ -32,6 +72,104 @@ info:
   contact: {}
   license: {}
 paths:
+  /admin/change_pwd:
+    post:
+      consumes:
+      - application/json
+      description: 修改管理员密码
+      operationId: /admin/change_pwd
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChangePwdInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 修改管理员密码
+      tags:
+      - 管理员接口
+  /admin/info:
+    get:
+      consumes:
+      - application/json
+      description: 获取管理员信息
+      operationId: /admin/info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AdminInfoOutput'
+              type: object
+      summary: 获取管理员信息
+      tags:
+      - 管理员接口
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: 管理员登陆
+      operationId: /admin/login
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AdminLoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AdminInfoOutput'
+              type: object
+      summary: 管理员登陆
+      tags:
+      - 管理员接口
+  /admin/logout:
+    get:
+      consumes:
+      - application/json
+      description: 管理员退出
+      operationId: /admin/logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/middleware.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 管理员退出
+      tags:
+      - 管理员接口
   /demo/bind:
     post:
       consumes:

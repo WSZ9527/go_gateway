@@ -5,10 +5,11 @@ go 1.14
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff // indirect
+	github.com/e421083458/go_gateway v0.0.0-20200620084504-d602eb8bc883
 	github.com/e421083458/golang_common v1.0.3
 	github.com/e421083458/gorm v1.0.1
 	github.com/garyburd/redigo v1.6.0
-	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
+	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-playground/locales v0.12.1
 	github.com/go-playground/universal-translator v0.16.0

@@ -5,7 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/e421083458/gin_scaffold/router"
+	"github.com/WSZ9527/go_gateway/router"
 	"github.com/e421083458/golang_common/lib"
 )
 

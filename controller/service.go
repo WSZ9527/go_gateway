@@ -11,9 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ServiceController 服务控制器
 type ServiceController struct {
 }
 
+// ServiceRegister 路由注册
 func ServiceRegister(group *gin.RouterGroup) {
 	service := &ServiceController{}
 	group.GET("/list", service.ServiceList)

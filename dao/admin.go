@@ -18,7 +18,7 @@ type Admin struct {
 	Password  string    `json:"password" gorm:"column:password" description:"密码"`
 	UpdatedAt time.Time `json:"update_at" gorm:"column:update_at" description:"更新时间"`
 	CreatedAt time.Time `json:"create_at" gorm:"column:create_at" description:"创建时间"`
-	IsDelete  int       `json:"is_delete" gorm:"column:is_delete" description:"是否删除"`
+	IsDelete  int8      `json:"is_delete" gorm:"column:is_delete" description:"是否删除"`
 }
 
 // TableName 映射当前表对应数据库中的表名

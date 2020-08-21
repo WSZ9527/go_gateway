@@ -237,6 +237,64 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/service/list": {
+            "get": {
+                "description": "服务列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "服务列表",
+                "operationId": "/service/list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "info",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页个数",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页数",
+                        "name": "page_no",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ServiceListOutput"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -317,6 +375,62 @@ var doc = `{
                 "passwd": {
                     "type": "string",
                     "example": "123456"
+                }
+            }
+        },
+        "dto.ServiceListItemOutput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "load_type": {
+                    "description": "负载类型",
+                    "type": "string"
+                },
+                "qpd": {
+                    "description": "日请求数",
+                    "type": "integer"
+                },
+                "qps": {
+                    "description": "QPS",
+                    "type": "integer"
+                },
+                "service_addr": {
+                    "description": "服务地址",
+                    "type": "string"
+                },
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string"
+                },
+                "service_name": {
+                    "description": "服务名称",
+                    "type": "string"
+                },
+                "total_node": {
+                    "description": "节点总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ServiceListOutput": {
+            "type": "object",
+            "required": [
+                "page_no"
+            ],
+            "properties": {
+                "page_no": {
+                    "description": "列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ServiceListItemOutput"
+                    }
+                },
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
                 }
             }
         },

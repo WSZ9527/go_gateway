@@ -39,22 +39,6 @@ definitions:
     required:
     - password
     type: object
-  dto.DemoInput:
-    properties:
-      age:
-        example: 20
-        type: integer
-      name:
-        example: 姓名
-        type: string
-      passwd:
-        example: "123456"
-        type: string
-    required:
-    - age
-    - name
-    - passwd
-    type: object
   dto.ServiceListItemOutput:
     properties:
       id:
@@ -210,19 +194,18 @@ paths:
       summary: 管理员退出
       tags:
       - 管理员接口
-  /demo/bind:
-    post:
+  /service/delete:
+    get:
       consumes:
       - application/json
-      description: 测试数据绑定
-      operationId: /demo/bind
+      description: 服务删除
+      operationId: /service/delete
       parameters:
-      - description: body
-        in: body
-        name: polygon
+      - description: 服务id
+        in: query
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/dto.DemoInput'
+        type: string
       produces:
       - application/json
       responses:
@@ -233,11 +216,11 @@ paths:
             - $ref: '#/definitions/middleware.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.DemoInput'
+                  type: string
               type: object
-      summary: 测试数据绑定
+      summary: 服务删除
       tags:
-      - 用户
+      - 服务管理
   /service/list:
     get:
       consumes:

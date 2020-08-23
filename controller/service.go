@@ -19,6 +19,7 @@ type ServiceController struct {
 func ServiceRegister(group *gin.RouterGroup) {
 	service := &ServiceController{}
 	group.GET("/list", service.ServiceList)
+	group.GET("/delete", service.ServiceDelete)
 }
 
 // ServiceList godoc
@@ -121,4 +122,47 @@ func (service *ServiceController) ServiceList(c *gin.Context) {
 		List:  outList,
 	}
 	middleware.ResponseSuccess(c, out)
+}
+
+// ServiceDelete godoc
+// @Summary 服务删除
+// @Description 服务删除
+// @Tags 服务管理
+// @ID /service/delete
+// @Accept  json
+// @Produce  json
+// @Param id query string true "服务id"
+// @Success 200 {object} middleware.Response{data=string} "success"
+// @Router /service/delete [get]
+func (service *ServiceController) ServiceDelete(c *gin.Context) {
+	// 1 获取参数
+	params := &dto.ServiceDeleteInput{}
+	if err := params.BindValidParam(c); err != nil {
+		middleware.ResponseError(c, 2000, err)
+		return
+	}
+
+	serviceInfo := &dao.Service{ID: params.ID}
+	// 2 从数据库连接池中取数据库连接
+	tx, err := lib.GetGormPool("default")
+	if err != nil { //取连接出错
+		middleware.ResponseError(c, 2001, err)
+		return
+	}
+
+	// 3 dao分页查询,读取服务基本信息
+	serviceInfo, err = serviceInfo.Find(c, tx, serviceInfo)
+	if err != nil {
+		middleware.ResponseError(c, 2002, err)
+		return
+	}
+
+	// 4 更改软删除属性,并保存
+	serviceInfo.IsDelete = 1
+	if err = serviceInfo.Save(c, tx); err != nil {
+		middleware.ResponseError(c, 2003, err)
+		return
+	}
+
+	middleware.ResponseSuccess(c, "")
 }

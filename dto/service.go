@@ -34,3 +34,13 @@ type ServiceListOutput struct {
 	Total int64                   `json:"total" form:"total" comment:"总数" example:"" validate:""`             //总数
 	List  []ServiceListItemOutput `json:"page_no" form:"page_no" comment:"列表" example:"" validate:"required"` //列表
 }
+
+// ServiceDeleteInput 删除接口接收参数
+type ServiceDeleteInput struct {
+	ID int64 `json:"id" form:"id" comment:"服务id" example:"56" validate:""` //服务id
+}
+
+// BindValidParam 绑定登录接口参数并校验
+func (param *ServiceDeleteInput) BindValidParam(c *gin.Context) error {
+	return public.DefaultGetValidParams(c, param)
+}

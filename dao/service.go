@@ -35,15 +35,15 @@ func (t *Service) TableName() string {
 	return "gateway_service_info"
 }
 
-// Find 根据已知条件查找一个admin对象查找
-func (t *Service) Find(c *gin.Context, tx *gorm.DB, search *Admin) (*Admin, error) {
-	adminInfo := &Admin{}
-	err := tx.SetCtx(public.GetGinTraceContext(c)).Where(search).Find(adminInfo).Error
+// Find 根据已知条件查找一个Service对象查找
+func (t *Service) Find(c *gin.Context, tx *gorm.DB, search *Service) (*Service, error) {
+	serviceInfo := &Service{}
+	err := tx.SetCtx(public.GetGinTraceContext(c)).Where(search).Find(serviceInfo).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return adminInfo, nil
+	return serviceInfo, nil
 }
 
 // Save 更新修改对象到数据库中

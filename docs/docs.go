@@ -191,9 +191,9 @@ var doc = `{
                 }
             }
         },
-        "/demo/bind": {
-            "post": {
-                "description": "测试数据绑定",
+        "/service/delete": {
+            "get": {
+                "description": "服务删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -201,19 +201,17 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户"
+                    "服务管理"
                 ],
-                "summary": "测试数据绑定",
-                "operationId": "/demo/bind",
+                "summary": "服务删除",
+                "operationId": "/service/delete",
                 "parameters": [
                     {
-                        "description": "body",
-                        "name": "polygon",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.DemoInput"
-                        }
+                        "type": "string",
+                        "description": "服务id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -228,7 +226,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.DemoInput"
+                                            "type": "string"
                                         }
                                     }
                                 }
@@ -351,28 +349,6 @@ var doc = `{
             "properties": {
                 "password": {
                     "description": "密码",
-                    "type": "string",
-                    "example": "123456"
-                }
-            }
-        },
-        "dto.DemoInput": {
-            "type": "object",
-            "required": [
-                "age",
-                "name",
-                "passwd"
-            ],
-            "properties": {
-                "age": {
-                    "type": "integer",
-                    "example": 20
-                },
-                "name": {
-                    "type": "string",
-                    "example": "姓名"
-                },
-                "passwd": {
                     "type": "string",
                     "example": "123456"
                 }
